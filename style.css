@@ -1007,7 +1007,7 @@ dialog h2 {
 }
 
 /* Keep the working view inside a desktop viewport, including navigation. */
-@media (min-width: 1000px) and (min-height: 600px) {
+@media (min-width: 1000px) {
   body { height: 100dvh; display: grid; grid-template-rows: 62px minmax(0, 1fr) 36px; }
   .site-header { height: 62px; padding: 0 28px; }
   .workspace { min-height: 0; grid-template-columns: 205px minmax(0, 1fr); }
@@ -1049,10 +1049,10 @@ dialog h2 {
   .intro-bottom { margin-top: 18px; gap: 24px; }
   .intro-actions { margin-top: 18px; padding-top: 16px; }
 }
-@media (min-width: 1000px) and (min-height: 600px) and (max-height: 850px) {
+@media (min-width: 1000px) and (max-height: 850px) {
   .intro-bottom { display: none; }
 }
-@media (min-width: 1000px) and (min-height: 600px) and (max-height: 760px) {
+@media (min-width: 1000px) and (max-height: 760px) {
   body { grid-template-rows: 56px minmax(0, 1fr) 30px; }
   .site-header { height: 56px; }
   main { padding: 16px 24px; }
@@ -1063,6 +1063,24 @@ dialog h2 {
   .instruction-panel li { font-size: 11px; }
   .instruction-panel .note { font-size: 10.5px; }
   .step-navigation { margin-top: 10px; padding-top: 10px; }
+}
+
+/* Windows scaling and browser chrome can leave less than 600 CSS pixels. */
+@media (min-width: 1000px) and (max-height: 620px) {
+  main { padding: 12px 20px; }
+  .page-heading h1 { font-size: 26px; margin-bottom: 4px; }
+  .page-heading { margin-bottom: 10px; }
+  .pattern-page .instruction-panel { padding: 12px; }
+  .pattern-page .instruction-panel .goal { padding-bottom: 8px; margin-bottom: 8px; }
+  .pattern-page .instruction-panel li { margin-bottom: 8px; line-height: 1.4; }
+  .pattern-page .instruction-panel .note { padding-top: 8px; line-height: 1.4; }
+  .pattern-page .instruction-panel .adjust-control { margin-bottom: 8px; }
+  .pattern-page .instruction-panel .eyebrow { display: none; }
+  .pattern-caption { display: none; }
+  .pattern-column { grid-template-rows: minmax(80px, 1fr) auto auto auto auto; }
+  .setup { padding: 12px 16px; }
+  .checklist { gap: 8px; }
+  .intro-actions { margin-top: 12px; padding-top: 12px; }
 }
 
 /* A separate instructions column keeps guidance from covering test patches. */

@@ -37,3 +37,7 @@ The website files were moved unchanged from `public/` to the repository root. Th
 Desktop pattern views now allocate height from the available viewport, keeping Previous / Next visible. The preparation page also uses the compact desktop layout. Fullscreen moves the actual instruction panel inside the fullscreen element, in a separate column beside the canvas; I toggles that column without covering any test patches. H continues to control the toolbar. Instructions update when switching patterns and return to the normal column on exit.
 
 Browser checks covered all six patterns in 1366×768 and 1024×768 embedded desktop viewports, with navigation inside the viewport. Preparation was checked at those sizes, plus 1920×1080. The longer gamma instructions also fit in 1366×650 and 1366×720 viewports. The expanded-view fallback was checked for visible instructions, the I toggle, switching patterns and Escape exit. Native fullscreen remains unavailable in the test environment. The eight pixel tests still pass.
+
+## Short scaled-desktop correction
+
+Removed the 600-CSS-pixel minimum height from the desktop viewport rules. Added a compact layout below 620 CSS pixels to account for Windows scaling and browser chrome. All six normal pattern views were checked at 1280×590: the page and instructions fit without scrolling and navigation remained visible. Preparation, black and gamma were also checked at 1024×590. At the smaller 1280×540 size, navigation remains visible; longer content can scroll within its panel.
