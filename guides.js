@@ -1,0 +1,112 @@
+// Original setup guides. Source links are shown with each article.
+const link = (url, label) => `<a href="${url}" target="_blank" rel="noopener">${label} ↗</a>`;
+const table = (headers, rows) => `<div class="guide-table"><table><thead><tr>${headers.map(x => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(x => `<td>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+export const guides = [
+  {
+    id: 'cleaning', title: 'Clean the screen', short: 'Cleaning', category: 'START HERE',
+    summary: 'Remove dust and fingerprints without damaging the coating.',
+    body: `<p class="guide-lead">Start with a clean screen, a clean microfiber cloth and very little pressure.</p>
+      <ol><li>Check the cleaning instructions for your exact display. Coatings differ, including between OLED models.</li><li>Switch it off, disconnect power and let it cool. A dark screen makes marks easier to see.</li><li>Gently lift dust with a clean, soft microfiber cloth. Keep grit away from the panel.</li><li>If the manufacturer allows water, lightly dampen the cloth with distilled water. Never spray the screen or let liquid run into its edges.</li><li>Wipe gently, then let the surface dry before reconnecting power.</li></ol>
+      <p>Avoid paper towels, abrasive cloths and household glass cleaner. Do not use alcohol, ammonia or other solvents unless the manufacturer explicitly approves them for this model. A cleaner that is safe for a phone’s glass may damage a monitor’s coating.</p>
+      <p>Do not scrub a stubborn mark harder. Stop and consult the display’s care instructions.</p>`,
+    sources: [['https://www.samsung.com/us/support/answer/ANS10005269/', 'Samsung: monitor cleaning and coating precautions']], related: ['viewing', 'range'],
+  },
+  {
+    id: 'range', title: 'Match the RGB range', short: 'Full / limited range', category: 'SIGNAL SETUP',
+    summary: 'Find the GPU controls and match what the display expects.',
+    body: `<p class="guide-lead">For a PC, use <strong>Full → Full</strong> when the complete connection supports it. <strong>Limited → Limited</strong> is a valid fallback. A mismatch is the problem.</p>
+      ${table(['PC output', 'Display expects', 'Result'], [['Full', 'Full', 'Recommended for a PC desktop.'], ['Limited', 'Limited', 'Correctly matched; usable when Full is unavailable.'], ['Limited', 'Full', 'Black becomes gray; whites look dim and contrast is reduced.'], ['Full', 'Limited', 'Dark and bright values can clip: crushed shadows and lost highlights.']])}
+      <h2>What the numbers mean</h2><p>For 8-bit RGB, Full maps black to 0 and white to 255. Limited maps reference black to 16 and reference white to 235. Correctly matched Limited can still produce the display’s black and white; it uses fewer code values between them. “Limited” does not mean the panel is forced to show gray blacks.</p>
+      <h2>Find the output setting</h2><p>Select the TV or monitor you are changing, especially with multiple displays. Menu names depend on driver version and the GPU actually driving the port.</p>
+      <details open><summary>NVIDIA</summary><p>NVIDIA Control Panel → Display → Change resolution. Select RGB as the output color format, then set Output dynamic range to Full. You may need to select “Use NVIDIA color settings” first. Apply the setting.</p></details>
+      <details><summary>AMD</summary><p>In AMD Software: Adrenalin Edition, search for Display and open Display Settings. Under Pixel Format choose “RGB 4:4:4 Pixel Format PC Standard (Full RGB)”. The Studio / Limited RGB option is for a matched limited-range connection.</p></details>
+      <details><summary>Intel</summary><p>In Intel Graphics Software, look in Display for Quantization Range. In Intel Graphics Command Center or the older Control Panel, look under Display → General Settings. Select Full. Availability depends on the GPU, port, driver and any adapter. Do not confuse desktop output quantization with a separate Video Input Range control.</p></details>
+      <h2>Match the display</h2><p>Look for RGB Range, HDMI Black Level, Video Range or an equivalent input setting. Names such as Low / High and Normal / Low are brand-dependent: check the model’s manual rather than guessing. Auto is useful when it detects the signal correctly.</p>
+      <p>Recheck <a href="#patterns/black">Black level</a> and <a href="#patterns/white">White level</a>. Do not compensate for a signal mismatch with the brightness or contrast controls. If Full is unavailable, set both ends to Limited and verify the result. Modern PC outputs normally support Full RGB, but a particular port, adapter or display path may restrict the option.</p>
+      <p class="guide-callout">These browser patterns still use full-range sRGB source values. A correctly configured GPU can map them into a matched Limited output. Do not reinterpret patch 16 as black on this webpage.</p>`,
+    sources: [
+      ['https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/mergedProjects/Display/To_change_the_RGB_range.htm', 'NVIDIA: output dynamic range'],
+      ['https://www.amd.com/en/resources/support-articles/faqs/DH3-007.html', 'AMD: pixel formats'],
+      ['https://www.intel.com/content/www/us/en/support/articles/000029572/graphics.html', 'Intel: quantization range'],
+      ['https://www.intel.com/content/www/us/en/support/articles/000058671/graphics.html', 'Intel: when the control is missing'],
+    ], related: ['hdmi', 'tv-pc'],
+  },
+  {
+    id: 'tv-pc', title: 'Use a TV as a PC display', short: 'TV settings for a PC', category: 'PICTURE & LATENCY',
+    summary: 'Keep desktop text sharp and avoid unnecessary processing delay.',
+    body: `<p class="guide-lead">Start with the right input mode, then remove processing that the PC signal does not need.</p>
+      <ol><li><strong>Enable the TV’s PC input mode or label.</strong> This often preserves 4:4:4 chroma and bypasses video processing. Some TVs provide a separate 4:4:4 pass-through setting.</li><li><strong>Enable Game mode / Game Optimizer for low latency.</strong> PC labeling and Game mode are not always the same control. Check both where available.</li><li><strong>Disable noise reduction, MPEG noise reduction and motion interpolation.</strong> Clean PC graphics do not need video denoising. It can soften fine detail; interpolation can add delay. A poor HDMI link produces errors or dropouts, not analog noise that this filter repairs.</li><li><strong>Find neutral sharpness.</strong> Look at <a href="#patterns/sharpness">Sharpness</a> and remove bright/dark halos without adding blur. Neutral is not necessarily zero. Disable extra edge enhancement / super resolution for this baseline.</li><li><strong>Use native resolution and 1:1 mapping.</strong> Disable overscan using Just Scan, Screen Fit or the model’s equivalent. Match <a href="#guides/range">RGB range</a> at both ends.</li></ol>
+      <p>Film or streaming content can contain compression artifacts, so processing preferences for movies may differ. Keep a separate picture preset if useful. For a PC desktop, prioritize legible text, faithful pixels and low delay.</p>
+      <h2>Check what the TV remembers</h2><p>Many TVs keep separate settings for each input and for SDR / HDR. Recheck after changing the HDMI port, picture mode or signal format. PC mode does not by itself prove low lag or 4:4:4 preservation on every model.</p>`,
+    sources: [['https://kr.eguide.lgappstv.com/manual/w25/w25_e66/eng.html', 'LG webOS user guide: PC and 4:4:4 processing'], ['https://www.rtings.com/tv/learn/chroma-subsampling', 'RTINGS: chroma and desktop text']], related: ['hdmi', 'range', 'hdr'],
+  },
+  {
+    id: 'hdmi', title: 'Choose an HDMI port and format', short: 'HDMI ports & formats', category: 'RESOLUTION & BANDWIDTH',
+    summary: 'Balance resolution, refresh rate, chroma and bit depth.',
+    body: `<p class="guide-lead">The supported signal is determined by the whole chain: GPU output → cable / adapter / receiver → TV input.</p>
+      <p>Check the exact port specifications at both ends. A TV may have a mix of lower- and higher-bandwidth inputs. Enable that input’s Enhanced format / HDMI Deep Color / Input Signal Plus setting when required. A version number alone does not guarantee a particular resolution, refresh rate or feature.</p>
+      <h2>Useful choices for an 18 Gbit/s HDMI 2.0 link</h2>
+      ${table(['Signal', 'Why choose it?', 'Qualification'], [
+        ['3840×2160 · 60 Hz · RGB / 4:4:4 · 8-bit', 'Crisp 4K desktop text. CeeJayDK’s current compromise.', 'A usual fit within 18 Gbit/s; both endpoints must offer it.'],
+        ['1920×1080 · 120 Hz · RGB / 4:4:4 · 8-bit', 'Smoother motion while keeping full color detail.', 'Lower resolution; check that the TV accepts 1080p/120.'],
+        ['3840×2160 · 120 Hz · 4:2:0 · 8-bit', 'Potentially keeps 4K and 120 Hz by reducing chroma.', 'Only on specific GPU/TV combinations that expose and accept this mode. Never assume support.'],
+        ['3840×2160 · 120 Hz · RGB / 4:4:4', 'High refresh and full color detail together.', 'Exceeds an uncompressed 18 Gbit/s link; use a sufficiently capable HDMI 2.1 FRL path or newer.'],
+      ])}
+      <h2>What is being traded?</h2><p><strong>RGB and YCbCr 4:4:4</strong> preserve full spatial color detail, although their encoding differs. <strong>4:2:2</strong> reduces horizontal chroma resolution; <strong>4:2:0</strong> reduces it horizontally and vertically. Colored text is an easy place to notice the loss.</p>
+      <p><strong>Bit depth is another bandwidth cost.</strong> 4K/60 RGB at 10-bit exceeds an ordinary 18 Gbit/s link even though 8-bit fits. For HDR on a constrained path, you may need lower refresh, lower resolution or subsampled chroma. Full versus Limited RGB is a separate choice and does not solve a bandwidth limit.</p>
+      <h2>Make the connection predictable</h2><p>For a capable 4K/120 setup, use the appropriate high-bandwidth GPU port, TV port and a certified Ultra High Speed HDMI cable. Its support can extend up to 48 Gbit/s, but an endpoint may support less. Adapters and AV receivers can be the limiting part. Check the active signal resolution, refresh rate, format and depth in the driver after applying settings.</p>
+      <p class="guide-callout">For desktop work on an HDMI 2.0 connection, 4K/60 RGB 8-bit is a sensible starting point. For fast games, compare a lower resolution at higher refresh. Choose the tradeoff you can actually see.</p>`,
+    sources: [['https://hdmiforum.org/specifications/ultra-high-speed-hdmi-cable/', 'HDMI Forum: Ultra High Speed cable and 4K/120'], ['https://www.rtings.com/tv/learn/chroma-subsampling', 'RTINGS: chroma subsampling'], ['https://kordzau.s3.amazonaws.com/uploads/2023/09/HDMI-Technology-Guide-v2.2.0-web.pdf', 'Kordz: HDMI signal-format bandwidth tables']], related: ['range', 'tv-pc', 'hdr'],
+  },
+  {
+    id: 'hdr', title: 'Set up HDR separately', short: 'HDR setup', category: 'WINDOWS 11',
+    summary: 'Use a real HDR signal and an HDR-aware calibration tool.',
+    body: `<p class="guide-lead">This site’s patterns are SDR / sRGB. Turning on Windows HDR does not turn them into calibrated HDR test signals.</p>
+      <ol><li>Check that the display, GPU output, cable and selected HDMI input support the HDR mode you want. Review <a href="#guides/hdmi">bandwidth and bit depth</a> before sacrificing desktop chroma.</li><li>On Windows 11, select the display in Settings → System → Display → HDR and enable Use HDR. Confirm that the display switches into its HDR mode.</li><li>Open the free Windows HDR Calibration app from Microsoft. Use it fullscreen on that display, in your normal room lighting. Follow its dark-detail, bright-detail and full-frame brightness tests.</li><li>Keep the display’s tone-mapping mode consistent while creating and using the profile. Follow the model’s gaming/HGiG guidance where available; avoid changing dynamic processing halfway through.</li><li>Check familiar HDR games or video. Adjust Windows’ SDR-content brightness separately for desktop comfort. Avoid increasing saturation simply to make the result look more dramatic.</li></ol>
+      <p>Revisit the profile after changing the display or signal setup. On Windows 10, do not confuse built-in-display HDR video calibration with Windows 11’s external-display HDR Calibration app. Use platform-appropriate tools.</p>
+      <p class="guide-callout">Return to SDR mode before following this site’s SDR walkthrough. Accurate HDR measurement and tone-map analysis require appropriate instruments and software.</p>`,
+    sources: [['https://support.microsoft.com/en-us/windows/hardware/display-graphics/calibrate-your-hdr-display-using-the-windows-hdr-calibration-app', 'Microsoft: Windows HDR Calibration'], ['https://support.microsoft.com/en-us/windows/hardware/display-graphics/calibrate-your-built-in-display-for-hdr-content-in-windows', 'Microsoft: built-in HDR video calibration']], related: ['hdmi', 'tv-pc'],
+  },
+  {
+    id: 'another-room', title: 'Put the PC in another room', short: 'PC in another room', category: 'CABLES OR STREAMING',
+    summary: 'Compare direct HDMI + USB with Sunshine/Moonlight and Punktfunk.',
+    body: `<p class="guide-lead">A TV can be your PC’s screen while the PC stays somewhere quieter. Direct cables and network streaming solve that in different ways.</p>
+      ${table(['Approach', 'Picture and delay', 'Input devices'], [
+        ['Direct HDMI + USB', 'A direct display link; no video codec encode/decode step.', 'A USB hub by the TV can connect keyboard, mouse and controllers.'],
+        ['Sunshine host + Moonlight client', 'Video is encoded on the PC and decoded at the client; quality and latency depend on the chain.', 'Client forwards supported inputs. Not every USB device or advanced controller feature is forwarded.'],
+        ['Punktfunk host + compatible client', 'A separate streaming system with its own protocol and client support.', 'Check the client’s current input and peripheral capabilities.'],
+      ])}
+      <h2>Direct HDMI and USB</h2><p>CeeJayDK’s setup uses a signal-only wall pass-through, disguised with blank cover plates on both sides: HDMI for the picture, USB to a hub beside the TV. It is separate from electrical power wiring. Wireless peripherals remain an option, but the hub also accommodates wired devices.</p>
+      <p>Plan a route suitable for the wall and cable type; this is an example layout, not drilling or electrical-installation instructions. Check the HDMI cable at the desired mode before concealing it. Longer runs may need an active / optical HDMI solution; check direction and supported formats. USB reach, hub power and device bandwidth need their own planning. HDMI alone does not provide general USB peripheral connectivity.</p>
+      <h2>Streaming over your home network</h2><p>Install Sunshine on the PC and a Moonlight client on the receiving device, then pair them using the projects’ instructions. Prefer wired Ethernet where practical. Start with a modest resolution / bitrate and increase them while checking decode performance, motion, text and latency. Wi-Fi can work, but congestion and signal quality affect consistency.</p>
+      <p>Punktfunk is an alternative host/client system, not simply a replacement Moonlight client. Use matching software and check current compatibility. Streaming is a compressed path; it should not be treated as a reference signal generator for calibration.</p>
+      <h2>Can the TV be the client?</h2><p>Community Moonlight TV and Punktfunk webOS clients exist for compatible LG TVs, so a separate client box may be unnecessary. Support depends on the model, webOS version, decoder and desired signal. Installation can involve Developer Mode or Homebrew Channel; do not assume the app is in LG’s normal store. Follow the current project instructions and check supported HDR, refresh rates and peripherals before buying hardware.</p>`,
+    sources: [['https://docs.lizardbyte.dev/projects/sunshine/latest/', 'Sunshine: host documentation'], ['https://github.com/moonlight-stream/moonlight-docs/wiki/Setup-Guide', 'Moonlight: setup guide'], ['https://github.com/mariotaku/moonlight-tv', 'Moonlight TV for webOS'], ['https://github.com/mariotaku/moonlight-tv/wiki/Installation-Guide', 'Moonlight TV: installation'], ['https://github.com/punktfunk/client-webos', 'Punktfunk: native webOS client'], ['https://punktfunk.unom.io/en/blog/lg-webos-tv-game-streaming-client', 'Punktfunk: LG client overview']], related: ['tv-pc', 'hdmi'],
+  },
+  {
+    id: 'viewing', title: 'Set up your viewing conditions', short: 'Viewing conditions', category: 'EVERYDAY USE',
+    summary: 'Make the picture comfortable and keep the checks repeatable.',
+    body: `<p class="guide-lead">Use the conditions you actually watch and work in.</p><ul><li>Reduce reflections without making the room unrealistically dark. Avoid a bright window reflected in the screen.</li><li>Let the display settle, then set panel light output to a comfortable level. Backlight / OLED pixel brightness is different from a black-level control.</li><li>Sit in your usual position, facing the screen. A viewing-angle change can alter perceived contrast or tint.</li><li>Temporarily disable adaptive brightness and night / blue-light filters for a stable SDR check.</li><li>Use native output resolution and 100% browser zoom for fine test textures. You can choose comfortable operating-system text scaling for daily use; do not assume a larger font means the HDMI signal has lost pixels.</li></ul><p>Keep separate room-light or input presets if useful. Recheck after changing gamma, a picture preset or the signal format. Visual checks can reveal obvious problems; a colorimeter is needed to measure luminance, white point and color accuracy.</p>`,
+    sources: [['https://support.microsoft.com/en-us/windows/hardware/display-graphics/calibrate-your-hdr-display-using-the-windows-hdr-calibration-app', 'Microsoft: use normal viewing conditions'], ['https://www.w3.org/Graphics/Color/srgb', 'sRGB reference specification']], related: ['cleaning', 'tv-pc'],
+  },
+  {
+    id: 'troubleshooting', title: 'Find the cause before adjusting', short: 'Troubleshooting', category: 'QUICK DIAGNOSIS',
+    summary: 'Start with the signal path when the picture looks wrong.',
+    body: `<p class="guide-lead">Change one thing at a time and keep a note of the original setting.</p>
+      ${table(['What you see', 'First checks'], [
+        ['Gray blacks and a washed-out desktop', '<a href="#guides/range">Full / Limited mismatch</a>; then dynamic processing and room reflections.'],
+        ['Shadow or highlight patches disappear', 'Check <a href="#guides/range">range matching</a> before black level or contrast. The 0 and 255 reference patches intentionally disappear.'],
+        ['Colored text is smeared', '<a href="#guides/hdmi">Chroma format</a>, TV PC mode and native output resolution.'],
+        ['Bright outlines around text or edges', 'Neutral sharpness; disable edge enhancement and super resolution.'],
+        ['Mouse movement feels delayed', 'Game / PC mode; disable interpolation. For streaming, check network, encode and decode delay.'],
+        ['Dropouts, sparkles, or a mode that will not stay selected', 'Try a supported lower-bandwidth mode; check the cable, ports and any adapter / receiver.'],
+        ['The SDR desktop looks odd with HDR enabled', 'Check Windows SDR-content brightness; use the <a href="#guides/hdr">HDR guide</a> for HDR calibration.'],
+      ])}
+      <p>If a control is missing, confirm which GPU drives the port and whether the connection goes through an adapter. Check the display’s manual for that exact input. Save successful settings per input and SDR / HDR mode.</p>`,
+    sources: [['https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/mergedProjects/Display/To_change_the_RGB_range.htm', 'NVIDIA: RGB range'], ['https://www.rtings.com/tv/learn/chroma-subsampling', 'RTINGS: chroma and text'], ['https://www.intel.com/content/www/us/en/support/articles/000058671/graphics.html', 'Intel: unavailable range controls']], related: ['range', 'hdmi', 'tv-pc'],
+  },
+];
+
+export function guideHTML(guide) {
+  return `<article class="setup-guide"><a class="guide-back" href="#guides/overview">← All setup guides</a>${guide.body}<nav class="guide-related" aria-label="Related guides"><h2>Next useful guides</h2>${guide.related.map(id => { const next = guides.find(g => g.id === id); return `<a href="#guides/${id}">${next.short} →</a>`; }).join('')}</nav><footer class="guide-sources"><h2>Sources &amp; further reading</h2><ul>${guide.sources.map(([url, title]) => `<li>${link(url, title)}</li>`).join('')}</ul><p>Checked 15 November 2026. Menus and client capabilities can change.</p></footer></article>`;
+}

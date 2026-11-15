@@ -18,4 +18,4 @@ jobs:
         with:
           node-version: 22
       - run: npm test
-      - run: node --check app.js && node --check content.js && node --check patterns.js
+      - run: node --check app.js && node --check content.js && node --check patterns.js && node --check guides.js

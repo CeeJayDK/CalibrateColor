@@ -1,4 +1,5 @@
-import { patterns } from './content.js';
+import { patterns, fullscreenSteps } from './content.js';
+import { guides, guideHTML } from './guides.js';
 import { renderPattern } from './patterns.js';
 
 const $ = selector => document.querySelector(selector);
@@ -18,6 +19,7 @@ $('#page').innerHTML = `
     <div class="pattern-column">
       <section class="stage" id="stage" aria-label="Calibration pattern viewer">
         <canvas id="pattern" role="img"></canvas>
+        <aside id="fs-guidance" class="fullscreen-guidance" aria-label="Fullscreen instructions" hidden></aside>
         <button id="fs-instructions" class="fullscreen-instructions-toggle" aria-pressed="true" hidden>Hide instructions <kbd>I</kbd></button>
         <div class="fullscreen-hint" hidden>Move the pointer for controls · H controls · I instructions · ← → switch · Esc exit</div>
         <div class="fullscreen-bar" hidden><button id="fs-prev" aria-label="Previous pattern">←</button><span class="fullscreen-title"></span><button id="fs-next" aria-label="Next pattern">→</button><button id="fs-labels" aria-pressed="true">Labels on</button><button id="hide-controls">Hide controls</button><button id="exit-fullscreen">Exit fullscreen</button></div>
@@ -36,18 +38,22 @@ const ctx = canvas.getContext('2d', {alpha: false, colorSpace: 'srgb'});
 function toast(message) { $('#notice').textContent = message; $('#notice').classList.add('show'); clearTimeout(noticeTimer); noticeTimer = setTimeout(() => $('#notice').classList.remove('show'), 4500); }
 function navigate(id, nextMode = mode) { location.hash = `${nextMode}/${id}`; }
 function rail() {
-  const items = mode === 'guide' ? ids : patterns.map(p => p.id);
-  $('#steps').innerHTML = items.map(id => {
-    const index = ids.indexOf(id), name = patterns.find(p => p.id === id)?.title || (id === 'preparation' ? 'Before you begin' : 'Your picture');
-    return `<a class="step-link ${current === id ? 'active' : ''}" ${current === id ? 'aria-current="step"' : ''} href="#${mode}/${id}"><span class="step-number">${String(index).padStart(2, '0')}</span><span>${name}</span>${reviewed.has(id) ? '<span class="step-check" aria-label="Checked">✓</span>' : ''}</a>`;
+  const items = mode === 'guides' ? ['overview', ...guides.map(g => g.id)] : mode === 'guide' ? ids : patterns.map(p => p.id);
+  $('#steps').innerHTML = items.map((id, position) => {
+    const index = mode === 'guides' ? position : ids.indexOf(id), name = mode === 'guides' ? guides.find(g => g.id === id)?.short || 'All guides' : patterns.find(p => p.id === id)?.title || (id === 'preparation' ? 'Before you begin' : 'Your picture');
+    return `<a class="step-link ${current === id ? 'active' : ''}" ${current === id ? 'aria-current="step"' : ''} href="#${mode}/${id}"><span class="step-number">${String(index).padStart(2, '0')}</span><span>${name}</span>${mode !== 'guides' && reviewed.has(id) ? '<span class="step-check" aria-label="Checked">✓</span>' : ''}</a>`;
   }).join('');
-  $('#rail-caption').textContent = mode === 'guide' ? 'YOUR WALKTHROUGH' : 'PATTERN LIBRARY';
+  $('#steps').setAttribute('aria-label', mode === 'guides' ? 'Setup guides' : 'Calibration steps');
+  $('#rail-caption').textContent = mode === 'guides' ? 'SETUP GUIDES' : mode === 'guide' ? 'YOUR WALKTHROUGH' : 'PATTERN LIBRARY';
   $('#guide-link').toggleAttribute('aria-current', mode === 'guide');
   $('#patterns-link').toggleAttribute('aria-current', mode === 'patterns');
   if (mode === 'guide') $('#guide-link').setAttribute('aria-current', 'page');
   if (mode === 'patterns') $('#patterns-link').setAttribute('aria-current', 'page');
   $('#patterns-link').href = `#patterns/${patterns.some(p => p.id === current) ? current : 'black'}`;
-  $('#guide-link').href = `#guide/${current}`;
+  $('#guide-link').href = `#guide/${mode === 'guides' ? 'preparation' : current}`;
+  $('#guides-link').toggleAttribute('aria-current', mode === 'guides');
+  if (mode === 'guides') $('#guides-link').setAttribute('aria-current', 'page');
+  $('.rail-tip').textContent = mode === 'guides' ? 'Set up the signal, then check the picture.' : 'Adjust your display’s own controls.';
 }
 function draw() {
   if ($('#pattern-layout').hidden || !ctx) return;
@@ -56,7 +62,7 @@ function draw() {
     const rect = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
     const width = Math.max(1, Math.round(rect.width * dpr)), height = Math.max(1, Math.round(rect.height * dpr));
     canvas.width = width; canvas.height = height;
-    renderPattern(ctx, current, width, height, {labels, scale: dpr});
+    renderPattern(ctx, current, width, height, {labels, scale: dpr, suppressFooter: (expanded || document.fullscreenElement === stage) && instructionsVisible && ['black', 'white'].includes(current)});
     $('#pixel-size').textContent = `${width} × ${height} canvas pixels · DPR ${Number(dpr.toFixed(2))}`;
   });
 }
@@ -82,8 +88,24 @@ function renderFinish() {
   $('#browse-patterns').onclick = () => navigate('black', 'patterns');
   $('#restart').onclick = () => { reviewed.clear(); checks.clear(); save(); navigate('preparation', 'guide'); toast('Walkthrough reset. Display settings are not changed.'); };
 }
+function renderGuides() {
+  document.body.classList.remove('pattern-page');
+  document.body.classList.add('reading-page');
+  $('#intro').hidden = false;
+  $('#pattern-layout').hidden = $('#step-navigation').hidden = true;
+  const guide = guides.find(g => g.id === current);
+  $('#page-kicker').textContent = guide?.category || 'BEFORE AND BEYOND CALIBRATION';
+  $('#page-title').textContent = guide?.title || 'Get the whole setup right.';
+  $('#page-subtitle').textContent = guide?.summary || 'Practical guides for the screen, the signal and the room.';
+  $('#step-count').textContent = 'SETUP GUIDES';
+  document.title = `${guide?.title || 'Setup guides'} — CalibrateColor`;
+  $('#intro').innerHTML = guide ? guideHTML(guide) : `<div class="guides-grid">${guides.map((g, i) => `<a class="guide-card" href="#guides/${g.id}"><span class="eyebrow">${String(i + 1).padStart(2, '0')} / ${g.category}</span><h2>${g.title}</h2><p>${g.summary}</p><span class="guide-card-action">Read guide →</span></a>`).join('')}</div><p class="guides-footnote">These guides complement the SDR patterns. HDR setup uses separate, HDR-aware tools.</p>`;
+  $('#main').scrollTop = 0;
+}
 function render() {
   rail();
+  if (mode === 'guides') { renderGuides(); return; }
+  document.body.classList.remove('reading-page');
   const pattern = patterns.find(p => p.id === current), isPattern = Boolean(pattern);
   document.body.classList.toggle('pattern-page', isPattern);
   document.title = `${pattern?.title || (current === 'finish' ? 'Your picture' : 'A clearer picture.')} — CalibrateColor`;
@@ -95,6 +117,9 @@ function render() {
   $('#page-subtitle').textContent = pattern?.subtitle || (current === 'finish' ? 'A few final checks before you settle in.' : 'A simple, visual guide to a well-adjusted monitor or TV.');
   $('#step-count').textContent = isPattern ? `${String(patterns.indexOf(pattern) + 1).padStart(2, '0')} / 06` : 'SDR / sRGB';
   if (isPattern) {
+    stage.dataset.pattern = current;
+    stage.classList.toggle('below-rows', ['black', 'white'].includes(current));
+    $('#fs-guidance').innerHTML = `<div class="fullscreen-guidance-heading"><strong>${pattern.title}</strong><span>Adjust: ${pattern.control}</span></div><p>${pattern.goal}</p><ol>${fullscreenSteps[current].map(text => `<li>${text}</li>`).join('')}</ol>`;
     $('#instructions').innerHTML = `<p class="eyebrow">WHAT TO LOOK FOR</p><h2>${pattern.title === 'Gamma' ? 'Find the closest blend.' : 'Look closely. Adjust gently.'}</h2><p class="goal">${pattern.goal}</p><p class="adjust-control">Adjust: ${pattern.control}</p><ol>${pattern.steps.map(text => `<li>${text}</li>`).join('')}</ol><p class="note">${pattern.note}</p>`;
     // Technical details live below the viewer, leaving the instructions easy to scan.
     let technical = $('#pattern-technical');
@@ -116,8 +141,8 @@ function render() {
 }
 function route() {
   const parts = location.hash.slice(1).split('/');
-  const nextMode = parts[0] === 'patterns' ? 'patterns' : 'guide';
-  const nextId = ids.includes(parts[1]) && (nextMode !== 'patterns' || patterns.some(p => p.id === parts[1])) ? parts[1] : nextMode === 'guide' ? 'preparation' : 'black';
+  const nextMode = parts[0] === 'guides' ? 'guides' : parts[0] === 'patterns' ? 'patterns' : 'guide';
+  const nextId = nextMode === 'guides' ? (guides.some(g => g.id === parts[1]) ? parts[1] : 'overview') : ids.includes(parts[1]) && (nextMode !== 'patterns' || patterns.some(p => p.id === parts[1])) ? parts[1] : nextMode === 'guide' ? 'preparation' : 'black';
   if ((expanded || document.fullscreenElement) && !patterns.some(p => p.id === nextId)) exitFullscreen();
   mode = nextMode; current = nextId;
   if (location.hash !== `#${mode}/${current}`) history.replaceState(null, '', `#${mode}/${current}`);
@@ -140,15 +165,13 @@ function toggleInstructions() {
 }
 function updateFullscreenUI(active) {
   stage.classList.toggle('fullscreen-active', active);
-  // Fullscreen can only display descendants of its element. Move the actual
-  // instructions into the viewer, retaining their content and accessibility.
+  $('#fs-guidance').hidden = !active;
   if (active) {
-    stage.append($('#instructions'));
     instructionsVisible = true;
     stage.classList.remove('instructions-hidden');
     $('#fs-instructions').setAttribute('aria-pressed', 'true');
     $('#fs-instructions').innerHTML = 'Hide instructions <kbd>I</kbd>';
-  } else $('#pattern-layout').append($('#instructions'));
+  }
   $('#fs-instructions').hidden = !active;
   $('.fullscreen-bar').hidden = !active; $('.fullscreen-hint').hidden = !active;
   if (active) { $('#exit-fullscreen').focus({preventScroll: true}); scheduleHide(); }
@@ -203,7 +226,7 @@ document.addEventListener('keydown', event => {
   if (key === 'l' && patterns.some(p => p.id === current)) toggleLabels();
   if (key === 'i' && fullscreen) toggleInstructions();
   if (key === 'h' && fullscreen) controls(stage.classList.contains('controls-hidden'));
-  if (key === 'arrowright' || key === 'arrowleft') { event.preventDefault(); move(key === 'arrowright' ? 1 : -1, fullscreen); }
+  if (mode !== 'guides' && (key === 'arrowright' || key === 'arrowleft')) { event.preventDefault(); move(key === 'arrowright' ? 1 : -1, fullscreen); }
 });
 window.addEventListener('hashchange', route);
 window.addEventListener('resize', draw);

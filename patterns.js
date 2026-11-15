@@ -36,7 +36,7 @@ export function pixelAt(name, x, y, width, height) {
   }
   return [0, 0, 0];
 }
-export function renderPattern(ctx, name, width, height, { labels = true, scale = 1 } = {}) {
+export function renderPattern(ctx, name, width, height, { labels = true, scale = 1, suppressFooter = false } = {}) {
   ctx.imageSmoothingEnabled = false;
   const gray = v => `rgb(${v},${v},${v})`;
   const fill = (value, x, y, w, h) => { ctx.fillStyle = gray(value); ctx.fillRect(x, y, w, h); };
@@ -51,7 +51,7 @@ export function renderPattern(ctx, name, width, height, { labels = true, scale =
       fill(r.value, r.x, r.y, r.w, r.h);
       label(String(r.value).padStart(3, '0'), r.x + r.w / 2, r.y + r.h + 22 * scale, white ? 120 : 130);
     }
-    label(white ? 'BACKGROUND 255 / 255 / 255' : 'BACKGROUND 0 / 0 / 0', width / 2, height * 0.92, white ? 120 : 100);
+    if (!suppressFooter) label(white ? 'BACKGROUND 255 / 255 / 255' : 'BACKGROUND 0 / 0 / 0', width / 2, height * 0.92, white ? 120 : 100);
   } else if (name === 'gamma') {
     fill(48, 0, 0, width, height);
     const cellW = Math.floor(width * 0.9 / 6), top = Math.round(height * 0.15), h = Math.floor(height * 0.65);

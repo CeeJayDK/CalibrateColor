@@ -1,3 +1,11 @@
+export const fullscreenSteps = {
+  black: ['Keep the background black; patches 8 and above should gradually become visible.', 'Adjust black level / shadow detail gently. Do not force patches 1–4 into view.', 'If black is gray or many steps vanish, check Full / Limited range at both ends.'],
+  white: ['Look for separation between near-white patches; 255 should disappear.', 'Lower Contrast only if several brighter patches merge into the background.', 'Use the panel-light control for comfortable brightness, then recheck.'],
+  gamma: ['Use native resolution and 100% browser zoom. Stand back until the checker texture blends.', 'Aim for the sRGB center to blend with its surround; try sRGB or a 2.2 preset.', 'This is an approximate midtone check. Scaling and sharpening can bias the match.'],
+  grayscale: ['Look for obvious red, green or blue casts across the steps.', 'Try sRGB or a Warm / 6500 K preset, then recheck black and white levels.', 'A screen cannot be its own white reference. Verify fine white-balance changes with a meter.'],
+  gradients: ['Look across the gray ramp, then the red, green and blue ramps.', 'Compare with dynamic contrast and other enhancement disabled.', 'Fine steps are normal in these 8-bit ramps; large jumps deserve investigation.'],
+  sharpness: ['Use native resolution, 100% browser zoom and 1:1 TV mapping.', 'Keep the fine textures distinct; remove halos around the lower rectangle.', 'Neutral sharpness is not always zero. Avoid both extra outlines and blur.'],
+};
 export const patterns = [
   {
     id: 'black', title: 'Black level', subtitle: 'Keep the shadows. Lose the haze.', control: 'Black level / shadow detail',

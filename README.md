@@ -5,9 +5,10 @@ A free, open-source webpage for visually adjusting SDR monitors and TVs using th
 ## First version
 
 - Guided preparation, six-step walkthrough and final review.
+- Eight source-linked setup guides: cleaning, full/limited RGB range, TV settings for PC use, HDMI formats, HDR, another-room connections, viewing conditions and troubleshooting.
 - Direct access and shareable links to black level, white level, gamma, grayscale, gradients and sharpness patterns.
 - Desktop pattern views fit the viewport, keeping navigation visible.
-- Fullscreen viewing includes an instructions column; press I to hide or restore it. Controls hide after 3.5 seconds, or immediately with H. Move the pointer, tap the pattern or press Tab to restore controls. An in-page fallback is labeled when browser fullscreen is unavailable.
+- Fullscreen guidance appears beneath black/white patch rows; other patterns reserve a strip below the canvas. Press I to hide or restore guidance. Controls hide after 3.5 seconds, or immediately with H. Move the pointer, tap the pattern or press Tab to restore controls. An in-page fallback is labeled when browser fullscreen is unavailable.
 - Backing-pixel canvas rendering in sRGB. Fine textures use individual backing pixels even on high-DPI displays. Labels can be hidden.
 - Optional local checklist and checked-pattern progress. No measurements, profiles or display settings are saved or changed.
 - Responsive layout, keyboard navigation, native dialogs and reduced-motion support.

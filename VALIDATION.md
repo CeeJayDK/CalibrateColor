@@ -41,3 +41,11 @@ Browser checks covered all six patterns in 1366×768 and 1024×768 embedded desk
 ## Short scaled-desktop correction
 
 Removed the 600-CSS-pixel minimum height from the desktop viewport rules. Added a compact layout below 620 CSS pixels to account for Windows scaling and browser chrome. All six normal pattern views were checked at 1280×590: the page and instructions fit without scrolling and navigation remained visible. Preparation, black and gamma were also checked at 1024×590. At the smaller 1280×540 size, navigation remains visible; longer content can scroll within its panel.
+
+## Setup guides and bottom fullscreen guidance
+
+Added eight original, source-linked setup guides for cleaning, RGB range, PC-on-TV settings, HDMI formats, Windows HDR, another-room connections, viewing conditions and troubleshooting. Verified guide routes, related-guide links, source URL protocols and complete fullscreen instructions for all six patterns. The optional canvas footer label can now be suppressed when guidance occupies its area; patch code values and default rendering are unchanged.
+
+Browser checks covered all eight article routes, the guide index, guide-to-walkthrough navigation, fullscreen instruction toggling and switching between black, white and gamma. At an embedded 1280×590 viewport, preparation, pattern and guide sidebars had equal scroll/client heights (504 pixels), with no sidebar scrollbar. Bottom guidance fit in its 159-pixel area. For gamma, its reserved bottom strip started exactly at the canvas bottom, avoiding overlap. Native fullscreen was unavailable in the environment; these viewer checks used the expanded fallback. The eight pixel tests and JavaScript syntax checks passed.
+
+Fullscreen black/white guidance uses space below the patch rows, leaving their rendering full width. Other patterns reserve a separate strip so their test content is not obscured. Guide articles intentionally scroll inside the reading area.

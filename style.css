@@ -1083,30 +1083,81 @@ dialog h2 {
   .intro-actions { margin-top: 12px; padding-top: 12px; }
 }
 
-/* A separate instructions column keeps guidance from covering test patches. */
-.stage.fullscreen-active {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  grid-template-rows: minmax(0, 1fr);
-}
-.stage.fullscreen-active canvas { min-width: 0; min-height: 0; grid-column: 1; grid-row: 1; }
-.stage.fullscreen-active > .instruction-panel {
-  grid-column: 2; grid-row: 1; display: block; min-height: 0;
-  overflow: auto; border: 0; border-left: 1px solid var(--line);
-  border-radius: 0; padding: 76px 24px 24px; margin: 0;
-}
-.fullscreen-instructions-toggle { position: absolute; top: 18px; right: 18px; z-index: 2; font-size: 12px; background: var(--surface); }
-.stage.fullscreen-active .fullscreen-bar { left: calc((100% - 320px) / 2); max-width: calc(100% - 352px); gap: 8px; }
+/* Fullscreen guidance sits beneath the rows, leaving the full width available. */
+.stage.fullscreen-active { --guidance-height: 164px; display: block; }
+.stage.fullscreen-active canvas { display: block; width: 100%; height: calc(100% - var(--guidance-height)); min-height: 0; }
+.fullscreen-guidance { position: absolute; left: 6%; right: 6%; bottom: 0; height: var(--guidance-height); overflow: auto; padding: 14px 0 12px; color: #bfc5b9; cursor: auto; }
+.fullscreen-guidance-heading { display: flex; gap: 18px; align-items: baseline; margin-bottom: 6px; font-size: 12px; }
+.fullscreen-guidance-heading strong { font-size: 14px; font-weight: 500; }
+.fullscreen-guidance-heading span { opacity: .8; }
+.fullscreen-guidance > p { color: inherit; margin: 0 0 10px; font-size: 12px; line-height: 1.5; }
+.fullscreen-guidance ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 32px; padding-left: 20px; margin: 0; }
+.fullscreen-guidance li { padding-left: 3px; font-size: 11px; line-height: 1.5; }
+.stage[data-pattern="white"] .fullscreen-guidance { color: #444; }
+.stage.fullscreen-active .fullscreen-bar { left: 50%; top: 14px; bottom: auto; max-width: calc(100% - 280px); gap: 8px; }
 .stage.fullscreen-active .fullscreen-bar button { padding: 8px 10px; }
 .stage.fullscreen-active .fullscreen-title { display: none; }
-.stage.fullscreen-active.instructions-hidden { grid-template-columns: minmax(0, 1fr); }
-.stage.instructions-hidden > .instruction-panel { display: none; }
-.stage.instructions-hidden .fullscreen-bar { left: 50%; max-width: calc(100% - 32px); }
+.fullscreen-instructions-toggle { position: absolute; top: 14px; right: 18px; z-index: 2; font-size: 12px; background: var(--surface); }
+.stage.fullscreen-active.instructions-hidden canvas { height: 100%; }
+.stage.instructions-hidden .fullscreen-guidance { display: none; }
 .stage.controls-hidden.instructions-hidden .fullscreen-instructions-toggle { visibility: hidden; pointer-events: none; }
-@media (max-width: 760px) {
-  .stage.fullscreen-active { grid-template-columns: minmax(0, 1fr) min(42vw, 280px); }
-  .stage.fullscreen-active > .instruction-panel { padding: 70px 12px 16px; }
-  .stage.fullscreen-active .fullscreen-bar { left: 16px; transform: none; max-width: calc(58% - 32px); flex-wrap: wrap; bottom: 12px; }
-  .stage.instructions-hidden .fullscreen-bar { left: 50%; transform: translateX(-50%); max-width: calc(100% - 32px); }
+@media (min-width: 800px) and (min-height: 500px) {
+  .stage.fullscreen-active.below-rows canvas { height: 100%; }
+  .stage.fullscreen-active.below-rows .fullscreen-guidance { top: 73%; bottom: 0; height: auto; }
+}
+@media (max-width: 799px) {
+  .stage.fullscreen-active { --guidance-height: 230px; }
+  .fullscreen-guidance ol { display: block; }
+  .fullscreen-guidance li { margin-bottom: 7px; }
+  .stage.fullscreen-active .fullscreen-bar { left: 12px; transform: none; max-width: calc(100% - 230px); flex-wrap: wrap; top: 12px; }
   .fullscreen-instructions-toggle { right: 10px; top: 12px; padding: 7px; font-size: 10px; }
+}
+
+/* A short rail stays useful at scaled desktop resolutions. */
+.rail-tip { font-size: 10px; line-height: 1.5; color: var(--dim); margin: auto 10px 0; padding-top: 16px; }
+@media (min-width: 1000px) {
+  .sidebar { padding: 16px 14px; }
+  .sidebar > .eyebrow { margin-bottom: 8px; }
+  .step-link { padding: 6px 10px; margin: 2px 0; font-size: 11px; }
+  .rail-tip { padding-top: 12px; }
+}
+@media (max-width: 760px) { .rail-tip { display: none; } }
+
+/* Setup guides are readable articles; pattern screens remain viewport-fitted. */
+.guides-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.guide-card { padding: 22px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+.guide-card:hover { border-color: #64744d; }
+.guide-card .eyebrow { display: block; font-size: 9px; margin-bottom: 12px; }
+.guide-card h2 { font-size: 21px; margin-bottom: 10px; }
+.guide-card p { font-size: 12px; margin-bottom: 20px; }
+.guide-card-action { color: var(--accent); font-size: 11px; }
+.guides-footnote { font-size: 11px; margin-top: 22px; }
+.setup-guide { max-width: 980px; padding-bottom: 24px; }
+.setup-guide p, .setup-guide li { font-size: 14px; line-height: 1.8; color: #bac3b0; }
+.setup-guide p { margin-bottom: 18px; }
+.setup-guide .guide-lead { font-size: 18px; color: var(--text); line-height: 1.6; margin-top: 24px; }
+.setup-guide h2 { font-size: 22px; margin: 30px 0 12px; }
+.setup-guide ol, .setup-guide ul { padding-left: 23px; }
+.setup-guide li { margin-bottom: 12px; padding-left: 4px; }
+.setup-guide strong { color: var(--text); font-weight: 550; }
+.setup-guide a:not(.guide-back) { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.guide-back { font-size: 12px; color: var(--accent); }
+.setup-guide details { margin-top: 10px; padding: 14px 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 7px; }
+.setup-guide summary { font-size: 13px; }
+.guide-table { overflow-x: auto; margin: 24px 0; }
+.guide-table table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+.guide-table th { color: var(--text); font-weight: 500; background: var(--surface); }
+.guide-table th, .guide-table td { border: 1px solid var(--line); padding: 12px 14px; vertical-align: top; }
+.guide-table td { color: #bac3b0; }
+.guide-callout { border-left: 2px solid var(--accent); padding: 12px 18px; background: var(--surface); }
+.guide-related { margin-top: 32px; border-top: 1px solid var(--line); }
+.guide-related a { display: inline-block; font-size: 12px; margin: 0 20px 12px 0; }
+.guide-sources { margin-top: 24px; border-top: 1px solid var(--line); }
+.guide-sources h2 { font-size: 15px; margin-top: 20px; }
+.guide-sources li, .guide-sources p { font-size: 11px; }
+@media (max-width: 760px) {
+  .guides-grid { grid-template-columns: 1fr; }
+  .top-nav { gap: 22px; }
+  .setup-guide p, .setup-guide li { font-size: 13px; }
+  .guide-table th, .guide-table td { padding: 9px; min-width: 110px; }
 }

@@ -1,6 +1,6 @@
 # Ideas for version two
 
-The first version deliberately focuses on visual adjustment in desktop browsers, SDR / sRGB, and six core patterns. These are proposals, not promises or implemented features.
+The test patterns deliberately focus on visual adjustment in desktop browsers, SDR / sRGB, and six core patterns. These are proposals, not promises or implemented features.
 
 ## First priority: refine the existing patterns
 
@@ -12,6 +12,7 @@ The first version deliberately focuses on visual adjustment in desktop browsers,
 ## Next useful additions
 
 - An optional quick pass through the walkthrough, with the current detailed instructions still available.
+- Per-model TV setup notes, starting with tested PC / Game mode and RGB-range mappings.
 - Danish translation, with a small language selector and independently reviewed terminology.
 - Locally downloadable, lossless sRGB PNG patterns with documented pixel dimensions and color metadata. Warn against image viewers that resize them.
 - A small optional diagnostic section for 1:1 mapping and 4:4:4 chroma; distinguish signal-path checks from calibration.
@@ -21,3 +22,7 @@ The first version deliberately focuses on visual adjustment in desktop browsers,
 HDR, wide-gamut, automatic display control and instrument integration need their own explicit designs and verified browser/device capabilities. Do not add a generic “HDR” switch to these SDR patterns or infer HDR output from display capability queries.
 
 No synthetic white-point picker: an unmeasured screen cannot be its own reliable D65 reference. No sliders that merely alter the webpage while implying that the display has been calibrated.
+
+## Setup guides added
+
+Source-linked first drafts now cover cleaning, RGB range / driver controls, TV-as-monitor settings, HDMI format tradeoffs, Windows HDR setup, HDMI+USB versus network streaming, viewing conditions and troubleshooting. The another-room guide includes CeeJayDK’s signal-only pass-through example and links to Moonlight TV / Punktfunk webOS clients. User-authored model-specific notes can refine these drafts later.
