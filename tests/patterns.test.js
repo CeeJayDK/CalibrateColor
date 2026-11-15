@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { BLACK_LEVELS, WHITE_LEVELS, GRAY_LEVELS, GAMMA_TARGETS, encodeSRGB, gammaByte, patchRects, pixelAt, renderPattern } from '../public/patterns.js';
+import { BLACK_LEVELS, WHITE_LEVELS, GRAY_LEVELS, GAMMA_TARGETS, encodeSRGB, gammaByte, patchRects, pixelAt, renderPattern } from '../patterns.js';
 
 // A small raster context verifies the generated pixels, not screenshots of text.
 function raster(width, height) {

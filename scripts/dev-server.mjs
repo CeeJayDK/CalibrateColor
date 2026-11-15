@@ -1,9 +1,9 @@
-// Dependency-free development server; deployment serves public/ directly.
+// Dependency-free development server; deployment serves the repository root directly.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve, extname, sep } from 'node:path';
-const root = fileURLToPath(new URL('../public/', import.meta.url));
+const root = fileURLToPath(new URL('../', import.meta.url));
 const args = process.argv.slice(2);
 const option = (key, fallback) => { const i = args.indexOf(key); return i >= 0 && args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : fallback; };
 const host = option('--host', '127.0.0.1'), port = Number(option('--port', '5173'));

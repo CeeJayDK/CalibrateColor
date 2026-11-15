@@ -13,7 +13,7 @@ A free, open-source webpage for visually adjusting SDR monitors and TVs using th
 
 ### Run locally
 
-Serve `public/` with any static HTTP server. For example, from this repository:
+Serve the repository root with any static HTTP server. For example, from this repository:
 
 ```sh
 npm run dev
@@ -28,11 +28,13 @@ npm test
 
 ### GitHub Pages and CeeJay.dk
 
-1. Commit these files to `main`, or merge an implementation branch. Preserve the directory structure: the website is in `public/`, and the deployment workflow is in `.github/workflows/`.
-2. In the repository's **Settings → Pages**, select **GitHub Actions** as the source.
-3. Run the included Pages workflow, or push to `main`. Only `public/` is deployed.
+1. Commit the website files to `main`. `index.html`, the scripts, styles and `.nojekyll` live at the repository root.
+2. In the repository's **Settings → Pages → Build and deployment**, select **Deploy from a branch**.
+3. Select branch **main**, folder **/ (root)**, then **Save**. Future pushes to `main` publish automatically.
 4. GitHub provides the project URL, normally `https://ceejaydk.github.io/CalibrateColor/`.
-5. When the desired CeeJay.dk address is decided, configure it in GitHub Pages and set the matching DNS record. A subdomain such as `calibrate.ceejay.dk` can point to `ceejaydk.github.io`. Alternatively serve the files in `public/` from a path on the existing CeeJay.dk website.
+5. When the desired CeeJay.dk address is decided, configure it in GitHub Pages and set the matching DNS record. A subdomain such as `calibrate.ceejay.dk` can point to `ceejaydk.github.io`. Alternatively copy the website files to a path on the existing CeeJay.dk website.
+
+The workflow in `.github/workflows/tests.yml` runs tests and syntax checks only. Deployment uses GitHub Pages branch publishing and needs no custom deployment workflow.
 
 No custom domain is configured by this change. Asset paths are relative, so the page supports a project subdirectory or a domain root. Hash routes do not require server rewrite rules. For a direct link, use e.g. `#patterns/black`.
 

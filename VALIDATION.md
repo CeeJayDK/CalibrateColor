@@ -26,4 +26,8 @@ The finished preparation screen and representative black-level, gamma and sharpn
 
 Native browser fullscreen could not be exercised in this environment; the denied-fullscreen fallback was exercised instead. Firefox, Safari, fractional display scaling, multiple physical displays and actual TV signal paths have not been tested. The responsive CSS is implemented, but no separate mobile-device test was performed.
 
-No colorimeter, physical panel or GPU output capture was available. These checks establish source pixel values and application behavior, not end-to-end display accuracy. GitHub Actions / Pages deployment will be checked separately once enabled in repository settings and run on `main`.
+No colorimeter, physical panel or GPU output capture was available. These checks establish source pixel values and application behavior, not end-to-end display accuracy. GitHub Pages branch deployment will be checked separately once enabled in repository settings with `main` and `/ (root)`.
+
+## Branch deployment layout
+
+The website files were moved unchanged from `public/` to the repository root. The test import and development server root were updated, and the deployment workflow was replaced with a test-only workflow. All eight pattern tests and JavaScript syntax checks passed after the move.
