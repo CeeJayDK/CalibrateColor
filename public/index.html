@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="A free, open-source guide to adjusting your monitor or TV. Fullscreen SDR / sRGB patterns for black level, white level, gamma, grayscale, gradients and sharpness.">
+  <title>CalibrateColor — A clearer picture.</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="#guide/preparation" aria-label="CalibrateColor home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Calibrate<span>Color</span><span class="beta">SDR</span></a>
+    <nav class="top-nav" aria-label="Main navigation"><a id="guide-link" href="#guide/preparation">Walkthrough</a><a id="patterns-link" href="#patterns/black">Test patterns</a><button id="about-button">About <span aria-hidden="true">↗</span></button></nav>
+    <a class="source-link" href="https://github.com/CeeJayDK/CalibrateColor" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+  </header>
+  <div class="workspace">
+    <aside class="sidebar"><p class="eyebrow" id="rail-caption">YOUR WALKTHROUGH</p><nav id="steps" aria-label="Calibration steps"></nav><div class="rail-note"><span class="status-dot"></span><strong>Your display. Your controls.</strong><p>Use the buttons on your monitor or your TV’s picture settings.</p></div><div class="rail-bottom"><span>sRGB</span><span>Full range · 0–255</span></div></aside>
+    <main id="main" tabindex="-1"><div id="page"></div></main>
+  </div>
+  <footer class="site-footer"><span>Made for a better picture.</span><span>CalibrateColor by <a href="https://ceejay.dk">CeeJayDK</a> <span class="footer-dot">·</span> Free &amp; open source</span><button id="shortcuts-button">Keyboard shortcuts <kbd>?</kbd></button></footer>
+  <dialog id="about-dialog"><button class="dialog-close" aria-label="Close dialog">×</button><p class="eyebrow">ABOUT THIS TOOL</p><h2>A little adjustment.<br>A clearer picture.</h2><p>CalibrateColor helps you visually adjust an SDR monitor or TV using its own picture controls. All patterns are generated locally. No uploads, tracking, accounts or external assets.</p><p>It cannot measure luminance, certify color accuracy, create an ICC profile, or control your display. A colorimeter and calibration software are needed for measured calibration.</p><p>Patterns use 8-bit full-range sRGB values. The browser, operating system, display profile and GPU output can change the final signal. This is not an HDR or limited-range video test.</p><details><summary>Technical reference &amp; source</summary><p>The tone-response target uses the <a href="https://www.w3.org/Graphics/Color/srgb" target="_blank" rel="noopener">sRGB transfer function</a>. Pure power-law gamma comparisons are labeled separately. Patterns and instructions are original to this project.</p><p><a href="https://github.com/CeeJayDK/CalibrateColor" target="_blank" rel="noopener">Source code and MIT license ↗</a></p></details></dialog>
+  <dialog id="shortcuts-dialog"><button class="dialog-close" aria-label="Close dialog">×</button><p class="eyebrow">STAY WITH THE PATTERN</p><h2>Keyboard shortcuts</h2><dl class="shortcuts"><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Previous / next step</dd><dt><kbd>F</kbd></dt><dd>Enter / exit fullscreen pattern</dd><dt><kbd>H</kbd></dt><dd>Hide / show fullscreen controls</dd><dt><kbd>L</kbd></dt><dd>Show / hide pattern labels</dd><dt><kbd>Esc</kbd></dt><dd>Leave fullscreen / close dialog</dd><dt><kbd>?</kbd></dt><dd>Show these shortcuts</dd></dl></dialog>
+  <div id="notice" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">Enable JavaScript to generate and navigate the calibration patterns.</p></noscript>
+</body>
+</html>
