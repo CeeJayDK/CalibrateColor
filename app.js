@@ -3,7 +3,7 @@ import { renderPattern } from './patterns.js';
 
 const $ = selector => document.querySelector(selector);
 const ids = ['preparation', ...patterns.map(p => p.id), 'finish'];
-let mode = 'guide', current = 'preparation', labels = true, expanded = false;
+let mode = 'guide', current = 'preparation', labels = true, expanded = false, instructionsVisible = true;
 let hideTimer, noticeTimer, frame;
 let saved = {};
 try { saved = JSON.parse(localStorage.getItem('calibratecolor-v1') || '{}') || {}; } catch { /* Storage is optional. */ }
@@ -18,7 +18,8 @@ $('#page').innerHTML = `
     <div class="pattern-column">
       <section class="stage" id="stage" aria-label="Calibration pattern viewer">
         <canvas id="pattern" role="img"></canvas>
-        <div class="fullscreen-hint" hidden>Move the pointer for controls · H hide · ← → switch · Esc exit</div>
+        <button id="fs-instructions" class="fullscreen-instructions-toggle" aria-pressed="true" hidden>Hide instructions <kbd>I</kbd></button>
+        <div class="fullscreen-hint" hidden>Move the pointer for controls · H controls · I instructions · ← → switch · Esc exit</div>
         <div class="fullscreen-bar" hidden><button id="fs-prev" aria-label="Previous pattern">←</button><span class="fullscreen-title"></span><button id="fs-next" aria-label="Next pattern">→</button><button id="fs-labels" aria-pressed="true">Labels on</button><button id="hide-controls">Hide controls</button><button id="exit-fullscreen">Exit fullscreen</button></div>
       </section>
       <div class="pattern-toolbar"><div class="toolbar-left"><span class="pill">sRGB · 8-bit</span><button id="labels-button" aria-pressed="true">Labels on</button></div><button id="fullscreen-button">Fullscreen <kbd>F</kbd></button></div>
@@ -84,6 +85,7 @@ function renderFinish() {
 function render() {
   rail();
   const pattern = patterns.find(p => p.id === current), isPattern = Boolean(pattern);
+  document.body.classList.toggle('pattern-page', isPattern);
   document.title = `${pattern?.title || (current === 'finish' ? 'Your picture' : 'A clearer picture.')} — CalibrateColor`;
   $('#intro').hidden = isPattern;
   $('#pattern-layout').hidden = !isPattern;
@@ -129,7 +131,25 @@ function move(direction, fromFullscreen = false) {
 function toggleLabels() { labels = !labels; for (const selector of ['#labels-button', '#fs-labels']) { $(selector).textContent = `Labels ${labels ? 'on' : 'off'}`; $(selector).setAttribute('aria-pressed', String(labels)); } draw(); }
 function controls(show = true) { stage.classList.toggle('controls-hidden', !show); clearTimeout(hideTimer); }
 function scheduleHide() { controls(true); if (document.fullscreenElement === stage || expanded) hideTimer = setTimeout(() => controls(false), 3500); }
+function toggleInstructions() {
+  instructionsVisible = !instructionsVisible;
+  stage.classList.toggle('instructions-hidden', !instructionsVisible);
+  $('#fs-instructions').setAttribute('aria-pressed', String(instructionsVisible));
+  $('#fs-instructions').innerHTML = `${instructionsVisible ? 'Hide' : 'Show'} instructions <kbd>I</kbd>`;
+  draw();
+}
 function updateFullscreenUI(active) {
+  stage.classList.toggle('fullscreen-active', active);
+  // Fullscreen can only display descendants of its element. Move the actual
+  // instructions into the viewer, retaining their content and accessibility.
+  if (active) {
+    stage.append($('#instructions'));
+    instructionsVisible = true;
+    stage.classList.remove('instructions-hidden');
+    $('#fs-instructions').setAttribute('aria-pressed', 'true');
+    $('#fs-instructions').innerHTML = 'Hide instructions <kbd>I</kbd>';
+  } else $('#pattern-layout').append($('#instructions'));
+  $('#fs-instructions').hidden = !active;
   $('.fullscreen-bar').hidden = !active; $('.fullscreen-hint').hidden = !active;
   if (active) { $('#exit-fullscreen').focus({preventScroll: true}); scheduleHide(); }
   else { controls(true); $('#fullscreen-button').focus({preventScroll: true}); }
@@ -142,7 +162,7 @@ async function enterFullscreen() {
     try { await stage.requestFullscreen(); return; } catch { /* Use in-page view when fullscreen is denied. */ }
   }
   expanded = true; stage.classList.add('expanded'); document.body.style.overflow = 'hidden'; updateFullscreenUI(true);
-  $('.fullscreen-hint').textContent = 'In-page view · browser chrome remains · H hide · Esc exit';
+  $('.fullscreen-hint').textContent = 'In-page view · browser chrome remains · H controls · I instructions · Esc exit';
 }
 function exitFullscreen() {
   if (document.fullscreenElement) document.exitFullscreen().catch(() => toast('Use Esc to leave fullscreen.'));
@@ -151,6 +171,7 @@ function exitFullscreen() {
 document.addEventListener('fullscreenchange', () => updateFullscreenUI(document.fullscreenElement === stage));
 $('#fullscreen-button').onclick = enterFullscreen;
 $('#exit-fullscreen').onclick = exitFullscreen;
+$('#fs-instructions').onclick = toggleInstructions;
 $('#labels-button').onclick = $('#fs-labels').onclick = toggleLabels;
 $('#hide-controls').onclick = () => { canvas.focus({preventScroll: true}); controls(false); };
 canvas.tabIndex = -1;
@@ -180,6 +201,7 @@ document.addEventListener('keydown', event => {
   if (key === '?') { if (!fullscreen) $('#shortcuts-dialog').showModal(); return; }
   if (key === 'f' && patterns.some(p => p.id === current)) { event.preventDefault(); enterFullscreen(); }
   if (key === 'l' && patterns.some(p => p.id === current)) toggleLabels();
+  if (key === 'i' && fullscreen) toggleInstructions();
   if (key === 'h' && fullscreen) controls(stage.classList.contains('controls-hidden'));
   if (key === 'arrowright' || key === 'arrowleft') { event.preventDefault(); move(key === 'arrowright' ? 1 : -1, fullscreen); }
 });

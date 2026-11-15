@@ -6,7 +6,8 @@ A free, open-source webpage for visually adjusting SDR monitors and TVs using th
 
 - Guided preparation, six-step walkthrough and final review.
 - Direct access and shareable links to black level, white level, gamma, grayscale, gradients and sharpness patterns.
-- Fullscreen viewing; controls hide after 3.5 seconds, or immediately with H. Move the pointer, tap the pattern or press Tab to restore controls. An in-page fallback is labeled when browser fullscreen is unavailable.
+- Desktop pattern views fit the viewport, keeping navigation visible.
+- Fullscreen viewing includes an instructions column; press I to hide or restore it. Controls hide after 3.5 seconds, or immediately with H. Move the pointer, tap the pattern or press Tab to restore controls. An in-page fallback is labeled when browser fullscreen is unavailable.
 - Backing-pixel canvas rendering in sRGB. Fine textures use individual backing pixels even on high-DPI displays. Labels can be hidden.
 - Optional local checklist and checked-pattern progress. No measurements, profiles or display settings are saved or changed.
 - Responsive layout, keyboard navigation, native dialogs and reduced-motion support.
@@ -45,6 +46,7 @@ No custom domain is configured by this change. Asset paths are relative, so the 
 | Left / Right | Previous / next step; in fullscreen, previous / next pattern |
 | F | Toggle fullscreen pattern |
 | H | Hide / show fullscreen controls |
+| I | Hide / show fullscreen instructions |
 | L | Toggle pattern labels |
 | Esc | Leave fullscreen or close a dialog |
 | ? | Show keyboard shortcuts outside fullscreen |

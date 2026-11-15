@@ -31,3 +31,9 @@ No colorimeter, physical panel or GPU output capture was available. These checks
 ## Branch deployment layout
 
 The website files were moved unchanged from `public/` to the repository root. The test import and development server root were updated, and the deployment workflow was replaced with a test-only workflow. All eight pattern tests and JavaScript syntax checks passed after the move.
+
+## Viewport and fullscreen instructions update
+
+Desktop pattern views now allocate height from the available viewport, keeping Previous / Next visible. The preparation page also uses the compact desktop layout. Fullscreen moves the actual instruction panel inside the fullscreen element, in a separate column beside the canvas; I toggles that column without covering any test patches. H continues to control the toolbar. Instructions update when switching patterns and return to the normal column on exit.
+
+Browser checks covered all six patterns in 1366×768 and 1024×768 embedded desktop viewports, with navigation inside the viewport. Preparation was checked at those sizes, plus 1920×1080. The longer gamma instructions also fit in 1366×650 and 1366×720 viewports. The expanded-view fallback was checked for visible instructions, the I toggle, switching patterns and Escape exit. Native fullscreen remains unavailable in the test environment. The eight pixel tests still pass.
