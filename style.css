@@ -1,12 +1,13 @@
+/* Neutral UI surrounds the calibration patterns without introducing a hue. */
 :root {
   color-scheme:dark;
-  --bg:#101210;
-  --surface:#191c19;
-  --line:#30352e;
-  --text:#edf0e8;
-  --muted:#a1aa99;
-  --accent:#d4ed9b;
-  --dim:#6b7465;
+  --bg:#111111;
+  --surface:#1b1b1b;
+  --line:#333333;
+  --text:#efefef;
+  --muted:#a7a7a7;
+  --accent:#e2e2e2;
+  --dim:#717171;
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   font-size:15px
 }
@@ -43,8 +44,8 @@ button {
   padding:9px 15px
 }
 button:hover {
-  background:#272d24;
-  border-color:#68705f
+  background:#2b2b2b;
+  border-color:#6d6d6d
 }
 button:disabled {
   opacity:.35;
@@ -91,7 +92,7 @@ p {
   top:-100px;
   left:20px;
   background:var(--accent);
-  color:#151a10;
+  color:#181818;
   padding:10px;
   z-index:100
 }
@@ -129,13 +130,13 @@ p {
 .brand-mark i {
   height:21px;
   width:5px;
-  background:#4e5846
+  background:#555555
 }
 .brand-mark i:nth-child(2) {
-  background:#83956b
+  background:#8e8e8e
 }
 .brand-mark i:nth-child(3) {
-  background:#b1c68e
+  background:#bdbdbd
 }
 .brand-mark i:nth-child(4) {
   background:var(--accent)
@@ -220,8 +221,8 @@ p {
   color:var(--muted)
 }
 .step-link.active {
-  background:#22291c;
-  border-color:#39452b;
+  background:#272727;
+  border-color:#414141;
   color:var(--accent)
 }
 .step-number {
@@ -246,7 +247,7 @@ p {
 }
 .rail-note strong {
   font-weight:450;
-  color:#c6cebd
+  color:#cbcbcb
 }
 .status-dot {
   display:inline-block;
@@ -314,7 +315,7 @@ main:focus {
 }
 .intro-visual {
   position:relative;
-  background:#050605;
+  background:#060606;
   border:1px solid var(--line);
   border-radius:10px;
   min-height:350px;
@@ -340,7 +341,7 @@ main:focus {
   content:"+";
   font-family:monospace;
   position:absolute;
-  color:#5e6857;
+  color:#656565;
   font-size:21px;
   top:14px;
   left:20px
@@ -355,7 +356,7 @@ main:focus {
   font-family:ui-monospace,monospace;
   font-size:9px;
   letter-spacing:2.3px;
-  color:#7c8771;
+  color:#838383;
   text-align:center
 }
 .setup {
@@ -419,16 +420,16 @@ main:focus {
 }
 .button-primary {
   background:var(--accent);
-  color:#1c2413;
+  color:#212121;
   border-color:var(--accent);
   font-size:12px;
   font-weight:600;
   padding:12px 20px
 }
 .button-primary:hover {
-  background:#e0f6b1;
-  color:#151c0d;
-  border-color:#e0f6b1
+  background:#ececec;
+  color:#191919;
+  border-color:#ececec
 }
 .intro-actions p {
   font-size:11px;
@@ -488,9 +489,9 @@ main:focus {
   left:50%;
   transform:translateX(-50%);
   max-width:calc(100% - 32px);
-  border:1px solid #545b4e;
+  border:1px solid #595959;
   border-radius:10px;
-  background:#171b16f5;
+  background:#1a1a1af5;
   padding:10px 12px;
   box-shadow:0 5px 35px #0005
 }
@@ -502,7 +503,7 @@ main:focus {
   font-size:12px;
   min-width:90px;
   margin:0 10px;
-  color:#edf0e8
+  color:#efefef
 }
 .fullscreen-hint {
   position:absolute;
@@ -511,8 +512,8 @@ main:focus {
   font-size:11px;
   padding:7px 12px;
   border-radius:5px;
-  background:#151914eb;
-  color:#c3cabd
+  background:#181818eb;
+  color:#c8c8c8
 }
 .stage.controls-hidden .fullscreen-bar,.stage.controls-hidden .fullscreen-hint {
   visibility:hidden;
@@ -577,7 +578,7 @@ main:focus {
   margin-bottom:9px
 }
 .instruction-panel .goal {
-  color:#c7d0bd;
+  color:#cdcdcd;
   font-size:12px;
   padding-bottom:18px;
   border-bottom:1px solid var(--line);
@@ -606,7 +607,7 @@ main:focus {
   font-size:9px;
   width:16px;
   height:16px;
-  border:1px solid #4b5542;
+  border:1px solid #525252;
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -634,7 +635,7 @@ details {
 }
 summary {
   cursor:pointer;
-  color:#c4cdba;
+  color:#cacaca;
   font-size:11px
 }
 details p {
@@ -689,18 +690,18 @@ details a {
 }
 kbd {
   font:10px ui-monospace,monospace;
-  border:1px solid #444c3c;
+  border:1px solid #494949;
   border-radius:4px;
   padding:2px 5px;
-  color:#acb79f;
+  color:#b3b3b3;
   margin-left:6px
 }
 .site-footer kbd {
   font-size:9px
 }
 dialog {
-  background:#191d17;
-  border:1px solid #414b37;
+  background:#1c1c1c;
+  border:1px solid #474747;
   color:var(--text);
   padding:38px;
   border-radius:13px;
@@ -748,7 +749,7 @@ dialog h2 {
   transform:translateX(-50%);
   z-index:110;
   background:var(--accent);
-  color:#1c2413;
+  color:#212121;
   padding:12px 20px;
   border-radius:7px;
   font-size:12px;
@@ -1086,7 +1087,7 @@ dialog h2 {
 /* Fullscreen guidance sits beneath the rows, leaving the full width available. */
 .stage.fullscreen-active { --guidance-height: 164px; display: block; }
 .stage.fullscreen-active canvas { display: block; width: 100%; height: calc(100% - var(--guidance-height)); min-height: 0; }
-.fullscreen-guidance { position: absolute; left: 6%; right: 6%; bottom: 0; height: var(--guidance-height); overflow: auto; padding: 14px 0 12px; color: #bfc5b9; cursor: auto; }
+.fullscreen-guidance { position: absolute; left: 6%; right: 6%; bottom: 0; height: var(--guidance-height); overflow: auto; padding: 14px 0 12px; color: #c3c3c3; cursor: auto; }
 .fullscreen-guidance-heading { display: flex; gap: 18px; align-items: baseline; margin-bottom: 6px; font-size: 12px; }
 .fullscreen-guidance-heading strong { font-size: 14px; font-weight: 500; }
 .fullscreen-guidance-heading span { opacity: .8; }
@@ -1126,14 +1127,14 @@ dialog h2 {
 /* Setup guides are readable articles; pattern screens remain viewport-fitted. */
 .guides-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .guide-card { padding: 22px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
-.guide-card:hover { border-color: #64744d; }
+.guide-card:hover { border-color: #6e6e6e; }
 .guide-card .eyebrow { display: block; font-size: 9px; margin-bottom: 12px; }
 .guide-card h2 { font-size: 21px; margin-bottom: 10px; }
 .guide-card p { font-size: 12px; margin-bottom: 20px; }
 .guide-card-action { color: var(--accent); font-size: 11px; }
 .guides-footnote { font-size: 11px; margin-top: 22px; }
 .setup-guide { max-width: 980px; padding-bottom: 24px; }
-.setup-guide p, .setup-guide li { font-size: 14px; line-height: 1.8; color: #bac3b0; }
+.setup-guide p, .setup-guide li { font-size: 14px; line-height: 1.8; color: #c0c0c0; }
 .setup-guide p { margin-bottom: 18px; }
 .setup-guide .guide-lead { font-size: 18px; color: var(--text); line-height: 1.6; margin-top: 24px; }
 .setup-guide h2 { font-size: 22px; margin: 30px 0 12px; }
@@ -1148,7 +1149,7 @@ dialog h2 {
 .guide-table table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
 .guide-table th { color: var(--text); font-weight: 500; background: var(--surface); }
 .guide-table th, .guide-table td { border: 1px solid var(--line); padding: 12px 14px; vertical-align: top; }
-.guide-table td { color: #bac3b0; }
+.guide-table td { color: #c0c0c0; }
 .guide-callout { border-left: 2px solid var(--accent); padding: 12px 18px; background: var(--surface); }
 .guide-related { margin-top: 32px; border-top: 1px solid var(--line); }
 .guide-related a { display: inline-block; font-size: 12px; margin: 0 20px 12px 0; }
